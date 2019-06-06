@@ -1,0 +1,31 @@
+---
+- name: include gen_sys_pkg_log.yml tasks
+  include_tasks: "gen_sys_pkg_log.yml"
+- name: generate facts file for requested system packages and versions
+  template:
+    src: "new_sys_pkg_request.json.j2"
+    dest: "{{ ud_facts_sys_dir }}/packages.fact"
+    backup: "yes"
+    mode: "0644"
+  when:
+    - ud_operation == "modify"
+- name: retrieve local facts from latest config file
+  setup:
+    fact_path: "{{ ud_facts_sys_dir }}"
+- name: setup sys pkg request based on retrieved local facts
+  set_fact:
+    ud_sys_pkg_request: "{{ ansible_local.packages.ud_sys_pkg_request }}"
+- name: include sys_<pkg_mgr>_operations.yml tasks
+  include_tasks: "sys_{{ ud_sys_pkg_mgr.name }}_operations.yml"
+- name: include gen_sys_pkg_log.yml tasks
+  include_tasks: "gen_sys_pkg_log.yml"
+- name: debug ansible_facts.packages
+  debug:
+    var: ud_sys_pkg_request|sort(attribute='name')|selectattr('state', 'equalto', 'present')
+- name: generate facts file containing current versions of previously requested system packages
+  template:
+    src: "update_sys_pkg_{{ ud_sys_pkg_mgr.name }}_request.json.j2"
+    dest: "{{ ud_facts_sys_dir }}/packages.fact"
+    backup: "yes"
+    mode: "0644"
+...

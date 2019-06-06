@@ -1,0 +1,6 @@
+---
+- name: include setup.yml tasks
+  include_tasks: "setup.yml"
+- name: include sys_operations.yml tasks
+  include_tasks: "sys_operations.yml"
+...

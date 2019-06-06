@@ -1,0 +1,22 @@
+---
+- name: Prepare
+  hosts: all
+  become: true
+  vars:
+    ud_operation: "modify"
+    ud_sys_pkg_request:
+      - name: "telnet"
+        version: "latest"
+      - name: "cowsay"
+        state: "absent"
+      - name: "nmap"
+  tasks:
+    - name: ensure cowsay system package is installed
+      apt:
+        name: "{{ item }}"
+        state: "present"
+      loop:
+        - "cowsay"
+        - "python3"
+  roles:
+    - ansible-role-updog

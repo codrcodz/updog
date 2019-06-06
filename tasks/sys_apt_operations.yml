@@ -1,0 +1,41 @@
+---
+- name: ensure apt cache is up to date
+  apt:
+    update_cache: "yes"
+  changed_when: false
+- name: ensure select apt packages are absent
+  apt:
+    name: "{{ item.name }}"
+    state: "absent"
+  loop: "{{ ud_sys_pkg_request }}"
+  when:
+    - item.state == "absent"
+    - ud_operation == "modify"
+- name: ensure select apt packages are present and at specific version
+  apt:
+    name: "{{ item.name }}={{ item.version }}"
+    state: "present"
+  loop: "{{ ud_sys_pkg_request }}"
+  when:
+    - item.version != "latest"
+    - item.state == "present"
+    - ud_operation == "modify" or ud_operation == "vercon"
+- name: ensure select apt packages are present and at latest version
+  apt:
+    name: "{{ item.name }}"
+    state: "{{ item.version }}"
+  loop: "{{ ud_sys_pkg_request }}"
+  when:
+    - item.version == "latest"
+    - item.state == "present"
+    - ud_operation == "modify" or ud_operation == "upgrade_select"
+- name: ensure all installed apt packages are upgraded
+  apt:
+    name: "*"
+    state: "latest"
+  when:
+    - ud_operation == "upgrade_all"
+- name: ensure orphaned dependencies are autoremoved
+  apt:
+    autoremove: "yes"
+...

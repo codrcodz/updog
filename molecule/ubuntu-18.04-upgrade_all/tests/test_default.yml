@@ -1,0 +1,8 @@
+---
+package:
+  cowsay:
+    installed: true
+  telnet:
+    installed: false
+  nmap:
+    installed: false

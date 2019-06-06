@@ -1,0 +1,15 @@
+{% raw %}
+{
+    "ud_sys_pkg_request": [
+{% endraw %}
+{% for request in ud_sys_pkg_request|sort(attribute='name')|selectattr('state', 'equalto', 'present') %}
+        {
+            "name": "{{ request.name }}",
+            "version": "{{ lookup('pipe', 'dpkg -s ' + request.name + ' | grep -oP "(?<=(Version:\s)).*$"') }}",
+            "state": "present"
+        } {% if not loop.last %},{% endif %}
+{% endfor %}
+{% raw %}
+    ]
+}
+{% endraw %}

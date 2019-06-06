@@ -1,0 +1,11 @@
+---
+- name: get system package facts
+  package_facts:
+    manager: "{{ ud_sys_pkg_mgr.name|default('auto') }}"
+  changed_when: false
+- name: generate log of current versions of system packages
+  template:
+    src: "sys_pkg_log.yml.j2"
+    dest: "{{ ud_logs_sys_dir }}/packages.log"
+    backup: "yes"
+...

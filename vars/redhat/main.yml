@@ -1,0 +1,5 @@
+---
+ud_sys_pkg_manager: "rpm"
+ud_sys_pip_package: "python-pip"
+ud_python_pip_command: "pip"
+...

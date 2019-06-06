@@ -1,0 +1,15 @@
+{% raw %}
+{
+    "ud_sys_pkg_request": [
+{% endraw %}
+{% for item in ud_sys_pkg_request|sort(attribute='name') %}
+        {
+            "name": "{{ item.name|default('_no_package_name_') }}",
+            "version": "{{ item.version|default('latest') }}",
+            "state": "{{ item.state|default('present') }}"
+        } {% if not loop.last %},{% endif %}
+{% endfor %}
+{% raw %}
+    ]
+}
+{% endraw %}

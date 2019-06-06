@@ -1,0 +1,13 @@
+---
+ud_osfam: "{{ ansible_os_family|lower }}"
+ud_osdis: "{{ ansible_distribution|lower }}"
+ud_osver: "{{ ansible_distribution_version|lower }}"
+ud_date: "{{ ansible_date_time.iso8601_basic_short }}"
+ud_facts_tld: "/etc/updog"
+ud_logs_tld: "/var/log/updog"
+ud_facts_sys_dir: "{{ ud_facts_tld }}/sys"
+ud_facts_sys_file: "packages"
+ud_logs_sys_dir: "{{ ud_logs_tld }}/sys"
+ud_facts_py_dir: "{{ ud_facts_tld }}/py"
+ud_logs_py_dir: "{{ ud_logs_tld }}/py"
+...

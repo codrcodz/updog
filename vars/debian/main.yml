@@ -1,0 +1,10 @@
+---
+ud_sys_pkg_mgr:
+  name: "apt"
+  pkg: "python3-apt"
+ud_py_pkg_mgr:
+  name: "pip3"
+  pkg: "python3-pip"
+ud_ansible_deps:
+  - "aptitude"
+...

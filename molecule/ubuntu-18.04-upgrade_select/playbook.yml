@@ -1,0 +1,15 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  vars:
+    ansible_python_interpreter: "python3"
+    ud_operation: "upgrade_select"
+    ud_sys_pkg_request:
+      - name: "telnet"
+        version: "latest"
+      - name: "cowsay"
+        state: "absent"
+      - name: "nmap"
+  roles:
+    - role: ansible-role-updog

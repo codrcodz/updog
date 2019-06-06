@@ -1,0 +1,12 @@
+---
+- name: Prepare
+  hosts: all
+  become: true
+  tasks:
+    - name: ensure select system packages is installed
+      apt:
+        name: "{{ item }}"
+        state: "present"
+      loop:
+        - "python3"
+        - "cowsay"

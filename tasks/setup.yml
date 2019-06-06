@@ -1,0 +1,46 @@
+---
+- name: ensure operation type fact is set
+  set_fact:
+    ud_operation: "{{ ud_operation|default('vercon') }}"
+- name: include distro specific facts
+  include_vars: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "main.yml"
+      paths:
+        - "vars/{{ ud_osfam }}/{{ ud_osdis }}/{{ ud_osver }}"
+        - "vars/{{ ud_osfam }}/{{ ud_osdis }}"
+        - "vars/{{ ud_osfam }}"
+- name: ensure updog top-level config and log directories exists
+  file:
+    path: "{{ item }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0775"
+  loop:
+    - "{{ ud_facts_tld }}"
+    - "{{ ud_logs_tld }}"
+- name: ensure updog config and log sub-directories exists
+  file:
+    path: "{{ item }}"
+    state: "directory"
+    owner: "root"
+    group: "root"
+    mode: "0775"
+  loop:
+    - "{{ ud_facts_sys_dir }}"
+    - "{{ ud_logs_sys_dir }}"
+    - "{{ ud_facts_py_dir }}"
+    - "{{ ud_logs_py_dir }}"
+- name: ensure proper python bindings installed to gather package facts
+  package:
+    name: "{{ ud_sys_pkg_mgr.name }}"
+    state: "present"
+- name: ensure distro-specfic system package ansible module dependencies installed
+  package:
+    name: "{{ item }}"
+    state: "present"
+  loop: "{{ ud_ansible_deps }}"
+...

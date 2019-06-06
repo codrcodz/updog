@@ -1,0 +1,5 @@
+ud_sys_pkg_log:
+{% for item in ansible_facts.packages|dict2items|subelements('value')|sort(attribute='0.key') %}
+  - name: "{{ item.0.key }}"
+    version: "{{ item.1.version }}"
+{% endfor %}
