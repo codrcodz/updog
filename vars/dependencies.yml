@@ -1,0 +1,5 @@
+---
+role_deps:
+  - dest: "updog"
+    repo: "git@github.com:codrcodz/updog.git"
+    version: "master"
